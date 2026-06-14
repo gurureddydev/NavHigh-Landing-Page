@@ -57,7 +57,11 @@ export const Chapter4HowWeWork: React.FC = () => {
             obs.observe(el);
             observers.push(obs);
         });
-        return () => observers.forEach((o) => o.disconnect());
+        return () => {
+            return observers.forEach((o) => {
+                return o.disconnect();
+            });
+        };
     }, []);
 
     const [headerInView, setHeaderInView] = useState(false);
@@ -68,36 +72,36 @@ export const Chapter4HowWeWork: React.FC = () => {
             ([e]) => {
                 if (e.isIntersecting) setHeaderInView(true);
             },
-            {
-                threshold: 0.05,
-            }
+            { threshold: 0.05 }
         );
         obs.observe(el);
-        return () => obs.disconnect();
+        return () => {
+            return obs.disconnect();
+        };
     }, []);
 
     return (
-        <section ref={sectionRef} className="relative bg-[#050510] overflow-hidden py-32 md:py-40">
-            <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#030308] to-transparent pointer-events-none" />
-            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#030308] to-transparent pointer-events-none" />
+        <section id="how-we-work" ref={sectionRef} className="relative bg-[#FAFBFF] overflow-hidden py-32 md:py-40">
+            <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#EEF2FF] to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F5F7FA] to-transparent pointer-events-none" />
 
             {/* Faint vertical rule */}
-            <div className="absolute left-1/2 top-32 bottom-32 w-px bg-gradient-to-b from-transparent via-blue-500/10 to-transparent hidden lg:block pointer-events-none" />
+            <div className="absolute left-1/2 top-32 bottom-32 w-px bg-gradient-to-b from-transparent via-blue-400/15 to-transparent hidden lg:block pointer-events-none" />
 
             <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-14">
                 {/* Header */}
                 <div
                     className={`mb-20 transition-[opacity,transform] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 >
-                    <span className="inline-flex items-center gap-2 text-blue-400/60 text-[11px] font-semibold tracking-[0.28em] uppercase mb-5">
-                        <span className="block w-5 h-px bg-blue-400/40" />
+                    <span className="inline-flex items-center gap-2 text-blue-600/60 text-[11px] font-semibold tracking-[0.28em] uppercase mb-5">
+                        <span className="block w-5 h-px bg-blue-500/40" />
                         How We Work
                     </span>
-                    <h2 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold tracking-[-0.04em] leading-[0.92] max-w-2xl">
+                    <h2 className="text-[#0F172A] text-5xl md:text-6xl lg:text-7xl font-bold tracking-[-0.04em] leading-[0.92] max-w-2xl">
                         A process built <br />
                         <span
                             style={{
-                                background: 'linear-gradient(135deg, #22d3ee, #3b82f6)',
+                                background: 'linear-gradient(135deg, #0891b2, #2563eb)',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent',
                                 backgroundClip: 'text',
@@ -111,7 +115,7 @@ export const Chapter4HowWeWork: React.FC = () => {
                 {/* Steps */}
                 <div className="relative flex flex-col gap-0">
                     {/* Animated vertical connector */}
-                    <div className="absolute left-6 top-0 bottom-0 w-px bg-white/5 hidden sm:block" />
+                    <div className="absolute left-6 top-0 bottom-0 w-px bg-[#0F172A]/06 hidden sm:block" />
 
                     {STEPS.map((step, i) => {
                         const active = activeSteps[i];
@@ -132,9 +136,9 @@ export const Chapter4HowWeWork: React.FC = () => {
                                 <div
                                     className="absolute left-[18px] top-11 w-5 h-5 rounded-full border-2 -translate-x-1/2 hidden sm:flex items-center justify-center transition-all duration-700"
                                     style={{
-                                        borderColor: active ? '#3b82f6' : 'rgba(255,255,255,0.1)',
-                                        backgroundColor: active ? '#3b82f6' : 'transparent',
-                                        boxShadow: active ? '0 0 16px rgba(59,130,246,0.6)' : 'none',
+                                        borderColor: active ? '#2563eb' : 'rgba(15,23,42,0.15)',
+                                        backgroundColor: active ? '#2563eb' : 'transparent',
+                                        boxShadow: active ? '0 0 16px rgba(37,99,235,0.5)' : 'none',
                                     }}
                                 >
                                     <div
@@ -144,22 +148,22 @@ export const Chapter4HowWeWork: React.FC = () => {
                                 </div>
 
                                 {/* Card */}
-                                <div className="flex-1 group rounded-2xl border border-white/[0.05] bg-white/[0.02] p-8 hover:border-blue-500/20 hover:bg-white/[0.04] transition-all duration-500">
+                                <div className="flex-1 group rounded-2xl border border-[#0F172A]/[0.07] bg-white p-8 hover:border-blue-400/30 hover:shadow-[0_8px_32px_rgba(37,99,235,0.07)] transition-all duration-500">
                                     <div className="flex items-start gap-6">
                                         {/* Number */}
                                         <span
                                             className="text-6xl font-bold leading-none select-none flex-shrink-0 transition-colors duration-500"
                                             style={{
-                                                color: active ? 'rgba(59,130,246,0.25)' : 'rgba(255,255,255,0.05)',
+                                                color: active ? 'rgba(37,99,235,0.2)' : 'rgba(15,23,42,0.07)',
                                             }}
                                         >
                                             {step.num}
                                         </span>
                                         <div>
-                                            <h3 className="text-white text-2xl font-bold tracking-[-0.02em] mb-3 group-hover:text-blue-300 transition-colors duration-300">
+                                            <h3 className="text-[#0F172A] text-2xl font-bold tracking-[-0.02em] mb-3 group-hover:text-blue-600 transition-colors duration-300">
                                                 {step.label}
                                             </h3>
-                                            <p className="text-white/40 leading-relaxed text-sm">{step.desc}</p>
+                                            <p className="text-[#0F172A]/50 leading-relaxed text-sm">{step.desc}</p>
                                         </div>
                                     </div>
                                 </div>

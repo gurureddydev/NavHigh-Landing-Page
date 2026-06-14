@@ -83,7 +83,7 @@
 
 /* ── NavHigh global tokens ────────────────────────────────────── */
 :root {
-    --nh-bg: #030308;
+    --nh-bg: #fafbff;
     --nh-blue: #3b82f6;
     --nh-blue-glow: rgba(59, 130, 246, 0.25);
 }
@@ -133,5 +133,163 @@ html {
 @media (prefers-reduced-motion: reduce) {
     .nh-magnetic {
         transition: none;
+    }
+}
+
+/* Custom cursor — hide default on fine-pointer devices ───────────────── */
+@media (pointer: fine) {
+    *,
+    *:hover {
+        cursor: none !important;
+    }
+}
+
+/* Tech ticker strip ─────────────────────────────────────────────────────── */
+@keyframes nh-ticker {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.nh-ticker {
+    animation: nh-ticker 28s linear infinite;
+    width: max-content;
+}
+
+/* Mobile orbit dot ─────────────────────────────────────────────────────── */
+@keyframes nh-orbit-dot {
+    from {
+        transform: rotate(0deg) translateX(80px);
+    }
+
+    to {
+        transform: rotate(360deg) translateX(80px);
+    }
+}
+
+.nh-orbit-dot {
+    animation: nh-orbit-dot 4s linear infinite;
+}
+
+/* Float keyframes for hero metric cards & chapter badges ─────────────── */
+@keyframes nh-float-a {
+    0%,
+    100% {
+        transform: translateY(0) rotate(-1deg);
+    }
+
+    50% {
+        transform: translateY(-14px) rotate(1deg);
+    }
+}
+
+@keyframes nh-float-b {
+    0%,
+    100% {
+        transform: translateY(0) rotate(1deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(-1.5deg);
+    }
+}
+
+@keyframes nh-float-c {
+    0%,
+    100% {
+        transform: translateY(0) rotate(-0.5deg);
+    }
+
+    50% {
+        transform: translateY(-18px) rotate(0.5deg);
+    }
+}
+
+@keyframes nh-float-d {
+    0%,
+    100% {
+        transform: translateY(0) rotate(2deg);
+    }
+
+    50% {
+        transform: translateY(-8px) rotate(-2deg);
+    }
+}
+
+@keyframes nh-float-e {
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-12px) scale(1.03);
+    }
+}
+
+.nh-float-a {
+    animation: nh-float-a 5s ease-in-out infinite;
+}
+
+.nh-float-b {
+    animation: nh-float-b 6.5s ease-in-out infinite;
+}
+
+.nh-float-c {
+    animation: nh-float-c 7s ease-in-out infinite;
+}
+
+.nh-float-d {
+    animation: nh-float-d 4.8s ease-in-out infinite;
+}
+
+.nh-float-e {
+    animation: nh-float-e 8s ease-in-out infinite;
+}
+
+/* Animate an energy line traveling along a path ─────────────────────── */
+@keyframes nh-dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Reduced motion — disable all CSS animations ───────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .nh-float-a,
+    .nh-float-b,
+    .nh-float-c,
+    .nh-float-d,
+    .nh-float-e,
+    .nh-orbit-dot,
+    .nh-ticker {
+        animation: none;
+    }
+}
+
+/* Hide scrollbar while keeping scroll functionality ───────────────── */
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Cursor ring + dot ─────────────────────────────────────────────────── */
+.nh-cursor-dot,
+.nh-cursor-ring {
+    display: none;
+}
+
+@media (pointer: fine) {
+    .nh-cursor-dot,
+    .nh-cursor-ring {
+        display: block;
     }
 }

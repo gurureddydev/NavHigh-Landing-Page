@@ -3,9 +3,9 @@ import QueryClientProvider from '@/providers/QueryClientProvider';
 import '@/styles/index.css';
 
 export const metadata: Metadata = {
-    title: 'Lithos - Layers Hold Tales of Time',
+    title: 'NavHigh Technologies — We Build What Moves Business',
     description:
-        'Every layer of sediment records a chapter of our planet, from ancient seabeds to drifting ash, layered across millions of years beneath us.',
+        'AI-native products, scalable systems, and long-term engineering partnerships for ambitious companies. 150+ projects delivered. 98% client retention.',
 };
 
 const RootLayout: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {

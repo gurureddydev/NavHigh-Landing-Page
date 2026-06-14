@@ -6,8 +6,8 @@ const CATEGORIES = [
     {
         id: 'frontend',
         label: 'Frontend',
-        color: '#3b82f6',
-        rgb: '59,130,246',
+        color: '#2563eb',
+        rgb: '37,99,235',
         x: 20,
         y: 18,
         nodes: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
@@ -15,8 +15,8 @@ const CATEGORIES = [
     {
         id: 'backend',
         label: 'Backend',
-        color: '#22d3ee',
-        rgb: '34,211,238',
+        color: '#0891b2',
+        rgb: '8,145,178',
         x: 72,
         y: 18,
         nodes: ['Node.js', 'Java', 'Python', 'PostgreSQL'],
@@ -24,8 +24,8 @@ const CATEGORIES = [
     {
         id: 'ai',
         label: 'AI & ML',
-        color: '#a78bfa',
-        rgb: '167,139,250',
+        color: '#7c3aed',
+        rgb: '124,58,237',
         x: 20,
         y: 70,
         nodes: ['OpenAI', 'LangGraph', 'LangChain', 'Vector DBs'],
@@ -33,8 +33,8 @@ const CATEGORIES = [
     {
         id: 'infra',
         label: 'Infrastructure',
-        color: '#f97316',
-        rgb: '249,115,22',
+        color: '#ea580c',
+        rgb: '234,88,12',
         x: 72,
         y: 70,
         nodes: ['Docker', 'AWS', 'Vercel', 'Cloudflare'],
@@ -62,9 +62,7 @@ export const Chapter5TechEcosystem: React.FC = () => {
             ([e]) => {
                 if (e.isIntersecting) setInView(true);
             },
-            {
-                threshold: 0.08,
-            }
+            { threshold: 0.08 }
         );
         obs.observe(el);
         return () => obs.disconnect();
@@ -78,24 +76,24 @@ export const Chapter5TechEcosystem: React.FC = () => {
     const getCategoryById = (id: string) => CATEGORIES.find((c) => c.id === id);
 
     return (
-        <section ref={sectionRef} className="relative bg-[#040410] overflow-hidden py-32 md:py-40">
-            <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#030308] to-transparent pointer-events-none" />
-            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#030308] to-transparent pointer-events-none" />
+        <section ref={sectionRef} className="relative bg-[#F5F7FA] overflow-hidden py-32 md:py-40">
+            <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#FAFBFF] to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#FAFBFF] to-transparent pointer-events-none" />
 
             <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-14">
                 {/* Header */}
                 <div
                     className={`mb-16 transition-[opacity,transform] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 >
-                    <span className="inline-flex items-center gap-2 text-blue-400/60 text-[11px] font-semibold tracking-[0.28em] uppercase mb-5">
-                        <span className="block w-5 h-px bg-blue-400/40" />
+                    <span className="inline-flex items-center gap-2 text-blue-600/60 text-[11px] font-semibold tracking-[0.28em] uppercase mb-5">
+                        <span className="block w-5 h-px bg-blue-500/40" />
                         Technology Ecosystem
                     </span>
-                    <h2 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold tracking-[-0.04em] leading-[0.92] max-w-2xl">
+                    <h2 className="text-[#0F172A] text-5xl md:text-6xl lg:text-7xl font-bold tracking-[-0.04em] leading-[0.92] max-w-2xl">
                         A living{' '}
                         <span
                             style={{
-                                background: 'linear-gradient(135deg, #a78bfa, #3b82f6)',
+                                background: 'linear-gradient(135deg, #7c3aed, #2563eb)',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent',
                                 backgroundClip: 'text',
@@ -104,7 +102,7 @@ export const Chapter5TechEcosystem: React.FC = () => {
                             system.
                         </span>
                     </h2>
-                    <p className="mt-4 text-white/40 text-lg max-w-lg leading-relaxed">
+                    <p className="mt-4 text-[#0F172A]/50 text-lg max-w-lg leading-relaxed">
                         Hover any category to illuminate its connections across the stack.
                     </p>
                 </div>
@@ -134,10 +132,10 @@ export const Chapter5TechEcosystem: React.FC = () => {
                                     y1={a.y + '%'}
                                     x2={b.x + '%'}
                                     y2={b.y + '%'}
-                                    stroke={highlight ? a.color : 'rgba(255,255,255,0.06)'}
+                                    stroke={highlight ? a.color : 'rgba(15,23,42,0.1)'}
                                     strokeWidth={highlight ? '0.4' : '0.2'}
                                     style={{
-                                        opacity: active ? (highlight ? 0.9 : 0.06) : 0.06,
+                                        opacity: active ? (highlight ? 0.9 : 0.1) : 0.1,
                                         transition: 'opacity 0.4s ease, stroke 0.4s ease, stroke-width 0.4s ease',
                                     }}
                                 />
@@ -160,11 +158,13 @@ export const Chapter5TechEcosystem: React.FC = () => {
                                         borderColor: active
                                             ? cat.color
                                             : connected
-                                              ? `rgba(${cat.rgb},0.3)`
-                                              : 'rgba(255,255,255,0.06)',
-                                        background: active ? `rgba(${cat.rgb},0.08)` : 'rgba(255,255,255,0.02)',
-                                        boxShadow: active ? `0 0 40px rgba(${cat.rgb},0.12)` : 'none',
-                                        opacity: dimmed ? 0.3 : 1,
+                                              ? `rgba(${cat.rgb},0.35)`
+                                              : 'rgba(15,23,42,0.08)',
+                                        background: active ? `rgba(${cat.rgb},0.06)` : '#FFFFFF',
+                                        boxShadow: active
+                                            ? `0 0 40px rgba(${cat.rgb},0.1), 0 4px 24px rgba(15,23,42,0.06)`
+                                            : '0 2px 12px rgba(15,23,42,0.05)',
+                                        opacity: dimmed ? 0.35 : 1,
                                         transform: active ? 'scale(1.02)' : 'scale(1)',
                                     }}
                                     onMouseEnter={() => setHoveredId(cat.id)}
@@ -176,12 +176,12 @@ export const Chapter5TechEcosystem: React.FC = () => {
                                             className="w-3 h-3 rounded-full transition-all duration-300"
                                             style={{
                                                 backgroundColor: cat.color,
-                                                boxShadow: active ? `0 0 12px rgba(${cat.rgb},0.8)` : 'none',
+                                                boxShadow: active ? `0 0 12px rgba(${cat.rgb},0.7)` : 'none',
                                             }}
                                         />
                                         <span
                                             className="text-sm font-semibold tracking-wide transition-colors duration-300"
-                                            style={{ color: active ? cat.color : 'rgba(255,255,255,0.5)' }}
+                                            style={{ color: active ? cat.color : 'rgba(15,23,42,0.55)' }}
                                         >
                                             {cat.label}
                                         </span>
@@ -194,13 +194,11 @@ export const Chapter5TechEcosystem: React.FC = () => {
                                                 key={node}
                                                 className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300"
                                                 style={{
-                                                    background: active
-                                                        ? `rgba(${cat.rgb},0.15)`
-                                                        : 'rgba(255,255,255,0.04)',
-                                                    color: active ? cat.color : 'rgba(255,255,255,0.35)',
+                                                    background: active ? `rgba(${cat.rgb},0.1)` : 'rgba(15,23,42,0.04)',
+                                                    color: active ? cat.color : 'rgba(15,23,42,0.5)',
                                                     border: active
                                                         ? `1px solid rgba(${cat.rgb},0.25)`
-                                                        : '1px solid rgba(255,255,255,0.06)',
+                                                        : '1px solid rgba(15,23,42,0.08)',
                                                 }}
                                             >
                                                 {node}
@@ -212,15 +210,18 @@ export const Chapter5TechEcosystem: React.FC = () => {
                         })}
                     </div>
 
-                    {/* Center hub label */}
+                    {/* Center hub */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <div
-                            className="w-16 h-16 rounded-full border border-white/10 bg-[#040410] flex items-center justify-center transition-all duration-500"
+                            className="w-16 h-16 rounded-full border bg-[#F5F7FA] flex items-center justify-center transition-all duration-500"
                             style={{
-                                boxShadow: hoveredId ? `0 0 30px rgba(59,130,246,0.2)` : '0 0 0 rgba(0,0,0,0)',
+                                borderColor: hoveredId ? 'rgba(37,99,235,0.3)' : 'rgba(15,23,42,0.1)',
+                                boxShadow: hoveredId
+                                    ? `0 0 30px rgba(37,99,235,0.15)`
+                                    : '0 2px 12px rgba(15,23,42,0.06)',
                             }}
                         >
-                            <svg width="24" height="24" viewBox="0 0 256 256" fill="rgba(255,255,255,0.4)">
+                            <svg width="24" height="24" viewBox="0 0 256 256" fill="rgba(15,23,42,0.4)">
                                 <path d="M 256 256 L 128 256 L 0 128 L 128 128 Z M 256 128 L 128 128 L 0 0 L 128 0 Z" />
                             </svg>
                         </div>
