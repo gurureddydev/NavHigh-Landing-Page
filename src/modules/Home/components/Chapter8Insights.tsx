@@ -335,7 +335,7 @@ export const Chapter8Insights: React.FC = () => {
     const rest = ARTICLES.slice(1);
 
     return (
-        <section ref={sectionRef} className="relative bg-[#FAFBFF] overflow-hidden py-32 md:py-44">
+        <section id="insights" ref={sectionRef} className="relative bg-[#FAFBFF] overflow-hidden py-32 md:py-44">
             <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#F5F7FA] to-transparent pointer-events-none" />
             <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#EEF2FF] to-transparent pointer-events-none" />
 

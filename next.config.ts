@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     compiler: {
         removeConsole: process.env.NODE_ENV === 'production',
     },
+    allowedDevOrigins: ['192.168.1.12', '127.0.0.1'],
     turbopack: {
         root: import.meta.dirname,
         rules: {

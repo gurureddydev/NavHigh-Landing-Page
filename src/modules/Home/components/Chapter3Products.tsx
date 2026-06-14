@@ -1106,7 +1106,7 @@ export const Chapter3Products: React.FC = () => {
     }, []);
 
     return (
-        <section ref={sectionRef} className="relative bg-white overflow-hidden py-24 md:py-40">
+        <section id="products" ref={sectionRef} className="relative bg-white overflow-hidden py-24 md:py-40">
             {/* Ambient glow matching active project */}
             <div
                 className="absolute top-0 right-0 w-[600px] h-[500px] rounded-full pointer-events-none transition-all duration-1000 ease-out"

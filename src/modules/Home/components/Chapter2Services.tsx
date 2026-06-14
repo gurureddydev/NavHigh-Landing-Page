@@ -719,7 +719,12 @@ export const Chapter2Services: React.FC = () => {
     }, []);
 
     return (
-        <section ref={sectionRef} className="relative overflow-hidden py-28 md:py-40" style={{ background: '#060B14' }}>
+        <section
+            id="services"
+            ref={sectionRef}
+            className="relative overflow-hidden py-28 md:py-40"
+            style={{ background: '#060B14' }}
+        >
             {/* ── Background atmosphere ── */}
             {/* Dot grid */}
             <div

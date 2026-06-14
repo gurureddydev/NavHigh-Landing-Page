@@ -138,8 +138,8 @@ html {
 
 /* Custom cursor — hide default on fine-pointer devices ───────────────── */
 @media (pointer: fine) {
-    *,
-    *:hover {
+    .custom-cursor-active,
+    .custom-cursor-active * {
         cursor: none !important;
     }
 }

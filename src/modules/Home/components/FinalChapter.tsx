@@ -142,7 +142,7 @@ export const FinalChapter: React.FC = () => {
 
                 const alpha = 0.15 + progress * 0.4;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r + progress, 0, Math.PI * 2);
+                ctx.arc(p.x, p.y, Math.max(0, p.r + progress), 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(37,99,235,${alpha})`;
                 ctx.fill();
             });

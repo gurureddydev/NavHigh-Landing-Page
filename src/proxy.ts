@@ -13,9 +13,13 @@ const PUBLIC_PATHS = ['/login', '/sign-up'];
 
 export async function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
+    const method = request.method;
 
     if (
         pathname === '/' ||
+        pathname === '/api/seed' ||
+        (pathname === '/api/courses' && method === 'GET') ||
+        (pathname === '/api/applications' && method === 'POST') ||
         PUBLIC_PATHS.some((publicPath) => {
             return pathname.startsWith(publicPath);
         })

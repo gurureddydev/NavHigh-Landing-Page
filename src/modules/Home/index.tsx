@@ -13,11 +13,12 @@ import { Chapter5TechEcosystem } from './components/Chapter5TechEcosystem';
 import { Chapter6CaseStudies } from './components/Chapter6CaseStudies';
 import { Chapter7WhyNavHigh } from './components/Chapter7WhyNavHigh';
 import { Chapter8Insights } from './components/Chapter8Insights';
+import { Chapter9Internships } from './components/Chapter9Internships';
 import { EcosystemCanvas } from './components/EcosystemCanvas';
 import { FinalChapter } from './components/FinalChapter';
 import { HeroCanvas } from './components/HeroCanvas';
 
-const NAV_ITEMS = ['Services', 'Products', 'Work', 'About', 'Insights'];
+const NAV_ITEMS = ['Services', 'Products', 'Work', 'About', 'Insights', 'Internships'];
 
 /* Replace names with actual client logos when available */
 const TRUSTED_LOGOS = [
@@ -37,6 +38,8 @@ const CustomCursor: React.FC = () => {
     const rafRef = useRef<number | null>(null);
 
     useEffect(() => {
+        document.body.classList.add('custom-cursor-active');
+
         const onMove = (e: MouseEvent) => {
             mouseRef.current = { x: e.clientX, y: e.clientY };
             if (dotRef.current) {
@@ -57,6 +60,7 @@ const CustomCursor: React.FC = () => {
         rafRef.current = requestAnimationFrame(tick);
 
         return () => {
+            document.body.classList.remove('custom-cursor-active');
             window.removeEventListener('mousemove', onMove);
             if (rafRef.current) cancelAnimationFrame(rafRef.current);
         };
@@ -126,6 +130,24 @@ const Home: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [statsInView, setStatsInView] = useState(false);
+
+    const scrollToSection = (item: string) => {
+        const idMap: Record<string, string> = {
+            Services: 'services',
+            Products: 'products',
+            Work: 'how-we-work',
+            About: 'about',
+            Insights: 'insights',
+            Internships: 'internships',
+        };
+        const id = idMap[item];
+        if (id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    };
 
     /* Animate counters after hero entrance animations finish */
     useEffect(() => {
@@ -206,6 +228,9 @@ const Home: React.FC = () => {
                         return (
                             <button
                                 key={item}
+                                onClick={() => {
+                                    return scrollToSection(item);
+                                }}
                                 className="px-4 py-1.5 rounded-full text-sm font-medium text-[#0F172A]/60 hover:text-[#0F172A] hover:bg-[#0F172A]/[0.06] transition-all duration-200"
                             >
                                 {item}
@@ -215,6 +240,12 @@ const Home: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-3">
+                    <a
+                        href="/careers"
+                        className="hidden md:inline-block text-sm font-semibold text-[#0F172A]/60 hover:text-[#0F172A] px-3 py-1.5 transition-colors"
+                    >
+                        Careers
+                    </a>
                     <button className="hidden md:flex items-center gap-2 bg-[#2563eb] hover:bg-[#1d4ed8] text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 hover:scale-[1.03] active:scale-95 hover:shadow-lg hover:shadow-[#3b82f6]/30">
                         Get Started
                     </button>
@@ -238,7 +269,8 @@ const Home: React.FC = () => {
                             <button
                                 key={item}
                                 onClick={() => {
-                                    return setMenuOpen(false);
+                                    setMenuOpen(false);
+                                    scrollToSection(item);
                                 }}
                                 className="text-2xl font-semibold text-[#0F172A]/80 hover:text-[#0F172A] transition-colors"
                                 style={{ animationDelay: `${i * 0.05}s` }}
@@ -247,6 +279,15 @@ const Home: React.FC = () => {
                             </button>
                         );
                     })}
+                    <a
+                        href="/careers"
+                        onClick={() => {
+                            return setMenuOpen(false);
+                        }}
+                        className="text-2xl font-semibold text-[#0F172A]/80 hover:text-[#0F172A] transition-colors mt-2"
+                    >
+                        Careers
+                    </a>
                     <button
                         onClick={() => {
                             return setMenuOpen(false);
@@ -475,6 +516,7 @@ const Home: React.FC = () => {
             <Chapter6CaseStudies />
             <Chapter7WhyNavHigh />
             <Chapter8Insights />
+            <Chapter9Internships />
             <FinalChapter />
         </main>
     );

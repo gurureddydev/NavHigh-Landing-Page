@@ -67,7 +67,7 @@ export const Chapter7WhyNavHigh: React.FC = () => {
     }, []);
 
     return (
-        <section ref={sectionRef} className="relative bg-[#F5F7FA] overflow-hidden py-32 md:py-40">
+        <section id="about" ref={sectionRef} className="relative bg-[#F5F7FA] overflow-hidden py-32 md:py-40">
             <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#EEF2FF] to-transparent pointer-events-none" />
             <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#FAFBFF] to-transparent pointer-events-none" />
 

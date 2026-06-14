@@ -18,7 +18,7 @@ export interface OptionsWithTypedBody<TBody extends BodyInit | null | undefined>
 export type BaseErrorData<TData = unknown> = { message: string } & TData;
 
 export const http = ky.create({
-    prefixUrl: env.NEXT_PUBLIC_API_URL,
+    prefixUrl: typeof window === 'undefined' ? env.NEXT_PUBLIC_API_URL : undefined,
     timeout: 30 * ONE_SECOND,
     retry: 0,
 });
