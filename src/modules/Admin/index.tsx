@@ -88,7 +88,7 @@ const AdminModule: React.FC = () => {
                 setShowCourseForm(false);
                 resetCourseForm();
             },
-            onError: (err: Error) => {
+            onError: (err) => {
                 setCourseErrors({ submit: err.message || 'Failed to save course.' });
             },
         })
@@ -120,7 +120,7 @@ const AdminModule: React.FC = () => {
                 setShowJobForm(false);
                 resetJobForm();
             },
-            onError: (err: Error) => {
+            onError: (err) => {
                 setJobErrors({ submit: err.message || 'Failed to save job.' });
             },
         })
