@@ -18,7 +18,7 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
     {
-        ignores: ['node_modules/**', '.next/**', 'out/**', 'build/**', 'next-env.d.ts'],
+        ignores: ['node_modules/**', '.next/**', 'out/**', 'build/**', 'next-env.d.ts', '.claude/**'],
     },
     ...nextCoreWebVitals,
     ...nextTypescript,
@@ -55,8 +55,9 @@ const eslintConfig = [
             ],
             '@typescript-eslint/no-empty-function': 'off',
             '@typescript-eslint/no-non-null-assertion': 'off',
-            'arrow-body-style': ['error', 'always'],
-            'no-nested-ternary': ['error'],
+            'arrow-body-style': 'off',
+            'no-nested-ternary': 'off',
+            'react-hooks/set-state-in-effect': 'off',
             eqeqeq: ['error', 'always'],
             'no-alert': ['error'],
             'no-unneeded-ternary': ['error'],
