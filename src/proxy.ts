@@ -9,7 +9,7 @@ import {
 import { isJWTExpired } from '@/lib/utils/auth/jwt/isJWTExpired';
 import { refreshToken } from '@/services/auth/api';
 
-const PUBLIC_PATHS = ['/login', '/sign-up'];
+const PUBLIC_PATHS = ['/login', '/sign-up', '/careers'];
 
 export async function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
@@ -19,6 +19,7 @@ export async function proxy(request: NextRequest) {
         pathname === '/' ||
         pathname === '/api/seed' ||
         (pathname === '/api/courses' && method === 'GET') ||
+        (pathname === '/api/jobs' && method === 'GET') ||
         (pathname === '/api/applications' && method === 'POST') ||
         PUBLIC_PATHS.some((publicPath) => {
             return pathname.startsWith(publicPath);

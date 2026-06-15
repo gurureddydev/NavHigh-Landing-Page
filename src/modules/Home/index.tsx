@@ -13,12 +13,12 @@ import { Chapter5TechEcosystem } from './components/Chapter5TechEcosystem';
 import { Chapter6CaseStudies } from './components/Chapter6CaseStudies';
 import { Chapter7WhyNavHigh } from './components/Chapter7WhyNavHigh';
 import { Chapter8Insights } from './components/Chapter8Insights';
-import { Chapter9Internships } from './components/Chapter9Internships';
+// Chapter9Internships removed
 import { EcosystemCanvas } from './components/EcosystemCanvas';
 import { FinalChapter } from './components/FinalChapter';
 import { HeroCanvas } from './components/HeroCanvas';
 
-const NAV_ITEMS = ['Services', 'Products', 'Work', 'About', 'Insights', 'Internships'];
+const NAV_ITEMS = ['Services', 'Products', 'Work', 'About', 'Insights'];
 
 /* Replace names with actual client logos when available */
 const TRUSTED_LOGOS = [
@@ -138,7 +138,6 @@ const Home: React.FC = () => {
             Work: 'how-we-work',
             About: 'about',
             Insights: 'insights',
-            Internships: 'internships',
         };
         const id = idMap[item];
         if (id) {
@@ -244,7 +243,7 @@ const Home: React.FC = () => {
                         href="/careers"
                         className="hidden md:inline-block text-sm font-semibold text-[#0F172A]/60 hover:text-[#0F172A] px-3 py-1.5 transition-colors"
                     >
-                        Careers
+                        Opportunities
                     </a>
                     <button className="hidden md:flex items-center gap-2 bg-[#2563eb] hover:bg-[#1d4ed8] text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 hover:scale-[1.03] active:scale-95 hover:shadow-lg hover:shadow-[#3b82f6]/30">
                         Get Started
@@ -286,7 +285,7 @@ const Home: React.FC = () => {
                         }}
                         className="text-2xl font-semibold text-[#0F172A]/80 hover:text-[#0F172A] transition-colors mt-2"
                     >
-                        Careers
+                        Opportunities
                     </a>
                     <button
                         onClick={() => {
@@ -516,7 +515,6 @@ const Home: React.FC = () => {
             <Chapter6CaseStudies />
             <Chapter7WhyNavHigh />
             <Chapter8Insights />
-            <Chapter9Internships />
             <FinalChapter />
         </main>
     );

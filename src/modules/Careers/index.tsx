@@ -1,14 +1,15 @@
 'use client';
 
-import type { Application, SubmitApplicationInput } from '@/services/courses/types';
+import type { Application, Course, SubmitApplicationInput } from '@/services/courses/types';
 import type { Job } from '@/services/jobs/types';
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-    Activity,
     ArrowLeft,
+    Award,
     Briefcase,
     CheckCircle2,
     Clock,
@@ -22,12 +23,13 @@ import {
     X,
 } from 'lucide-react';
 import { submitApplication } from '@/services/courses/api';
+import { getCoursesQueryOptions } from '@/services/courses/queries';
 import { getJobsQueryOptions } from '@/services/jobs/queries';
-
-// Dynamic fetching replaces hardcoded OPEN_JOBS list
+import logoSrc from '@/icons/logo_navhigh.png';
 
 const CareersModule: React.FC = () => {
-    const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+    const [selectedItem, setSelectedItem] = useState<Job | Course | null>(null);
+    const [activeTab, setActiveTab] = useState<'jobs' | 'internships'>('jobs');
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
@@ -39,6 +41,15 @@ const CareersModule: React.FC = () => {
     const [showSuccess, setShowSuccess] = useState(false);
 
     const { data: jobs = [], isLoading, isError } = useQuery(getJobsQueryOptions());
+    const {
+        data: courses = [],
+        isLoading: isLoadingCourses,
+        isError: isErrorCourses,
+    } = useQuery(getCoursesQueryOptions());
+
+    const isCourse = (item: Job | Course): item is Course => {
+        return 'duration' in item;
+    };
 
     const { mutate: submitApp, isPending } = useMutation<Application, Error, SubmitApplicationInput>({
         mutationFn: (data) => {
@@ -56,7 +67,7 @@ const CareersModule: React.FC = () => {
             setFormErrors({});
             setTimeout(() => {
                 setShowSuccess(false);
-                setSelectedJob(null);
+                setSelectedItem(null);
             }, 3000);
         },
         onError: (error) => {
@@ -85,22 +96,35 @@ const CareersModule: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!selectedJob) return;
+        if (!selectedItem) return;
         const errors = validateForm();
         if (Object.keys(errors).length > 0) {
             setFormErrors(errors);
             return;
         }
         setFormErrors({});
-        submitApp({
-            type: 'job',
-            positionTitle: selectedJob.title,
-            fullName: formData.fullName,
-            email: formData.email,
-            phone: formData.phone,
-            resumeTextOrLink: formData.resumeTextOrLink,
-            notes: formData.notes,
-        });
+
+        if (isCourse(selectedItem)) {
+            submitApp({
+                type: 'internship',
+                courseId: selectedItem._id,
+                fullName: formData.fullName,
+                email: formData.email,
+                phone: formData.phone,
+                resumeTextOrLink: formData.resumeTextOrLink,
+                notes: formData.notes,
+            });
+        } else {
+            submitApp({
+                type: 'job',
+                positionTitle: selectedItem.title,
+                fullName: formData.fullName,
+                email: formData.email,
+                phone: formData.phone,
+                resumeTextOrLink: formData.resumeTextOrLink,
+                notes: formData.notes,
+            });
+        }
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -203,11 +227,111 @@ const CareersModule: React.FC = () => {
                             <div className="mt-8 pt-4 border-t border-slate-900/60">
                                 <button
                                     onClick={() => {
-                                        return setSelectedJob(job);
+                                        return setSelectedItem(job);
                                     }}
                                     className="w-full bg-slate-900 hover:bg-blue-600 border border-slate-850 hover:border-transparent text-white text-xs font-bold py-3 px-4 rounded-xl transition-all active:scale-[0.98]"
                                 >
                                     Apply for Role
+                                </button>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    };
+
+    const renderCoursesContent = () => {
+        if (isLoadingCourses) {
+            return (
+                <div className="flex flex-col items-center justify-center py-20 gap-4">
+                    <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+                    <p className="text-slate-500 text-sm font-medium">Loading internship programs...</p>
+                </div>
+            );
+        }
+        if (isErrorCourses) {
+            return (
+                <div className="text-center py-16 rounded-3xl border border-slate-900 bg-slate-950/20 p-8 max-w-xl mx-auto">
+                    <p className="text-red-500 text-sm font-medium">Failed to load internship programs.</p>
+                    <p className="text-slate-500 text-xs mt-1">Please try refreshing the page or contact support.</p>
+                </div>
+            );
+        }
+        if (courses.length === 0) {
+            return (
+                <div className="text-center py-20 rounded-3xl border border-slate-900 bg-slate-950/20 p-8 max-w-xl mx-auto">
+                    <Briefcase className="w-10 h-10 text-slate-700 mx-auto mb-4" />
+                    <p className="text-white text-lg font-bold">No active internships right now</p>
+                    <p className="text-slate-500 text-sm mt-1">
+                        We don&apos;t have any open internship cohorts at the moment, but feel free to check back soon.
+                    </p>
+                </div>
+            );
+        }
+        return (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {courses.map((course) => {
+                    return (
+                        <div
+                            key={course._id}
+                            className="bg-slate-950/50 border border-slate-900 rounded-3xl p-7 md:p-8 flex flex-col justify-between hover:border-blue-500/20 hover:shadow-[0_12px_40px_rgba(59,130,246,0.04)] transition-all duration-500 min-h-[360px]"
+                        >
+                            <div>
+                                {/* Metadata tags */}
+                                <div className="flex flex-wrap items-center gap-2 mb-5">
+                                    <span className="inline-flex items-center gap-1 text-[9px] font-bold text-blue-400 bg-blue-950/50 px-2.5 py-1 rounded-full border border-blue-900/40">
+                                        <Clock className="w-3 h-3" />
+                                        {course.duration}
+                                    </span>
+                                    <span className="inline-flex items-center gap-1 text-[9px] font-bold text-purple-400 bg-purple-950/50 px-2.5 py-1 rounded-full border border-purple-900/40">
+                                        <Award className="w-3 h-3" />
+                                        Stipend: {course.stipend}
+                                    </span>
+                                    <span className="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-400 bg-emerald-950/50 px-2.5 py-1 rounded-full border border-emerald-900/40">
+                                        Remote Training
+                                    </span>
+                                </div>
+
+                                {/* Title */}
+                                <h3 className="text-white text-xl font-bold tracking-tight">{course.title}</h3>
+                                <span className="text-[10px] text-slate-500 font-semibold block mt-1 uppercase">
+                                    Internship Program
+                                </span>
+
+                                {/* Description */}
+                                <p className="text-slate-400 text-xs mt-4 leading-relaxed">{course.description}</p>
+
+                                {/* Syllabus topics */}
+                                {course.topics && course.topics.length > 0 && (
+                                    <div className="mt-5">
+                                        <span className="text-[9px] text-slate-600 font-bold uppercase tracking-wider block mb-2">
+                                            Syllabus Outline
+                                        </span>
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {course.topics.map((topic) => {
+                                                return (
+                                                    <span
+                                                        key={topic}
+                                                        className="text-[9px] font-semibold px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-850"
+                                                    >
+                                                        {topic}
+                                                    </span>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="mt-8 pt-4 border-t border-slate-900/60">
+                                <button
+                                    onClick={() => {
+                                        return setSelectedItem(course);
+                                    }}
+                                    className="w-full bg-slate-900 hover:bg-blue-600 border border-slate-850 hover:border-transparent text-white text-xs font-bold py-3 px-4 rounded-xl transition-all active:scale-[0.98]"
+                                >
+                                    Apply for Program
                                 </button>
                             </div>
                         </div>
@@ -234,12 +358,14 @@ const CareersModule: React.FC = () => {
             {/* Header */}
             <header className="relative border-b border-slate-900/60 bg-slate-950/40 backdrop-blur-md px-6 md:px-14 py-4 flex items-center justify-between z-40">
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-blue-600/10 border border-blue-500/30 flex items-center justify-center">
-                        <Activity className="w-4 h-4 text-blue-500" />
+                    <div className="w-8 h-8 rounded-xl bg-blue-600/10 border border-blue-500/30 flex items-center justify-center overflow-hidden">
+                        <Image src={logoSrc} alt="NavHigh" width={20} height={20} className="object-contain" />
                     </div>
                     <div>
                         <span className="font-bold text-base tracking-tight text-white block">NavHigh</span>
-                        <span className="text-[10px] text-slate-500 tracking-wider uppercase">Careers Portal</span>
+                        <span className="text-[10px] text-slate-500 tracking-wider uppercase">
+                            Opportunities Portal
+                        </span>
                     </div>
                 </div>
 
@@ -277,21 +403,41 @@ const CareersModule: React.FC = () => {
                     </p>
                 </div>
 
-                {/* Open positions header */}
-                <div className="border-b border-slate-900 pb-5 mb-8 flex items-center justify-between">
-                    <h2 className="text-white text-xl font-bold tracking-tight">Open Positions</h2>
-                    <span className="text-[10px] font-semibold text-slate-500 bg-slate-900/80 border border-slate-800/60 px-3 py-1 rounded-full">
-                        {jobs.length} Active Openings
-                    </span>
+                {/* Tabs switcher */}
+                <div className="flex justify-center gap-4 mb-12">
+                    <button
+                        onClick={() => {
+                            return setActiveTab('jobs');
+                        }}
+                        className={`px-6 py-2.5 rounded-full text-xs font-bold transition-all duration-350 active:scale-95 ${
+                            activeTab === 'jobs'
+                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25 border border-transparent'
+                                : 'bg-slate-900/50 text-slate-400 border border-slate-850 hover:text-white hover:border-slate-700'
+                        }`}
+                    >
+                        Job Openings ({jobs.length})
+                    </button>
+                    <button
+                        onClick={() => {
+                            return setActiveTab('internships');
+                        }}
+                        className={`px-6 py-2.5 rounded-full text-xs font-bold transition-all duration-350 active:scale-95 ${
+                            activeTab === 'internships'
+                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25 border border-transparent'
+                                : 'bg-slate-900/50 text-slate-400 border border-slate-850 hover:text-white hover:border-slate-700'
+                        }`}
+                    >
+                        Internships ({courses.length})
+                    </button>
                 </div>
 
-                {/* Job openings grid */}
-                {renderJobsContent()}
+                {/* Content grid based on active tab */}
+                {activeTab === 'jobs' ? renderJobsContent() : renderCoursesContent()}
             </main>
 
             {/* Application Modal */}
             <AnimatePresence>
-                {selectedJob && (
+                {selectedItem && (
                     <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
                         {/* Backdrop */}
                         <motion.div
@@ -299,7 +445,7 @@ const CareersModule: React.FC = () => {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => {
-                                if (!isPending) setSelectedJob(null);
+                                if (!isPending) setSelectedItem(null);
                             }}
                             className="absolute inset-0 bg-black/60 backdrop-blur-md"
                         />
@@ -323,8 +469,8 @@ const CareersModule: React.FC = () => {
                                     </motion.div>
                                     <h3 className="text-white text-2xl font-bold tracking-tight">Application Sent!</h3>
                                     <p className="text-slate-500 text-xs max-w-xs mt-2 leading-relaxed">
-                                        Thank you for applying for the <strong>{selectedJob.title}</strong> role. Our
-                                        recruiting team will review your profile and respond soon.
+                                        Thank you for applying for the <strong>{selectedItem.title}</strong> program.
+                                        Our recruiting team will review your profile and respond soon.
                                     </p>
                                 </div>
                             ) : (
@@ -332,7 +478,7 @@ const CareersModule: React.FC = () => {
                                     {/* Close Button */}
                                     <button
                                         onClick={() => {
-                                            return setSelectedJob(null);
+                                            return setSelectedItem(null);
                                         }}
                                         disabled={isPending}
                                         className="absolute top-5 right-5 text-slate-500 hover:text-white p-2 hover:bg-slate-900 rounded-full transition-colors"
@@ -347,9 +493,11 @@ const CareersModule: React.FC = () => {
                                             <span className="text-[9px] text-blue-500 bg-blue-950/40 border border-blue-900/30 px-2 py-0.5 rounded font-bold uppercase tracking-wider">
                                                 Application Form
                                             </span>
-                                            <h3 className="text-white text-lg font-bold mt-2">{selectedJob.title}</h3>
+                                            <h3 className="text-white text-lg font-bold mt-2">{selectedItem.title}</h3>
                                             <p className="text-slate-500 text-[10px] mt-0.5">
-                                                {selectedJob.department} · {selectedJob.location} · {selectedJob.type}
+                                                {isCourse(selectedItem)
+                                                    ? `Internship Program · Duration: ${selectedItem.duration} · Stipend: ${selectedItem.stipend}`
+                                                    : `${selectedItem.department} · ${selectedItem.location} · ${selectedItem.type}`}
                                             </p>
                                         </div>
 
@@ -528,7 +676,7 @@ const CareersModule: React.FC = () => {
                                                     type="button"
                                                     disabled={isPending}
                                                     onClick={() => {
-                                                        return setSelectedJob(null);
+                                                        return setSelectedItem(null);
                                                     }}
                                                     className="px-5 py-2.5 rounded-xl border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-900 font-semibold transition-colors disabled:opacity-50"
                                                 >
