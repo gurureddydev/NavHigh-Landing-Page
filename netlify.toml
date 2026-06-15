@@ -1,3 +1,7 @@
 [build]
   command = "npm run build"
   publish = ".next"
+
+[build.environment]
+  MONGODB_URI = "mongodb+srv://navhigh_db_user:BjEA93E0R02G2SNp@cluster0.no8wtn1.mongodb.net/?appName=Cluster0"
+  NEXT_PUBLIC_API_URL = "http://localhost:3000"

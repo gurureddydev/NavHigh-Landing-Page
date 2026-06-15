@@ -26,11 +26,15 @@ jobs:
       - name: Build Project
         run: npx netlify build
         env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: nfp_UU6W9DhfHLUwus18JgufmsK1YCAA4XV3dc94
+          NETLIFY_SITE_ID: d298c47b-5aa1-4b9a-a603-9684f2f3ce37
+          MONGODB_URI: mongodb+srv://navhigh_db_user:BjEA93E0R02G2SNp@cluster0.no8wtn1.mongodb.net/?appName=Cluster0
+          NEXT_PUBLIC_API_URL: http://localhost:3000
 
       - name: Deploy to Netlify
         run: npx netlify deploy --prod
         env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: nfp_UU6W9DhfHLUwus18JgufmsK1YCAA4XV3dc94
+          NETLIFY_SITE_ID: d298c47b-5aa1-4b9a-a603-9684f2f3ce37
+          MONGODB_URI: mongodb+srv://navhigh_db_user:BjEA93E0R02G2SNp@cluster0.no8wtn1.mongodb.net/?appName=Cluster0
+          NEXT_PUBLIC_API_URL: http://localhost:3000
