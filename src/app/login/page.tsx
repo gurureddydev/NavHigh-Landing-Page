@@ -149,10 +149,10 @@ const LoginForm: React.FC = () => {
                 </div>
             </form>
 
-            <div className="mt-6 pt-6 border-t border-slate-900 text-center">
+            {/* <div className="mt-6 pt-6 border-t border-slate-900 text-center">
                 <span className="text-[10px] text-slate-600 block">Hardcoded Admin Credentials:</span>
                 <code className="text-[9px] text-slate-400 mt-1 block">admin@navhigh.com / password123</code>
-            </div>
+            </div> */}
         </div>
     );
 };
